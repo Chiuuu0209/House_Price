@@ -26,29 +26,29 @@ class HousepriceSpider(scrapy.Spider):
         # yield scrapy.Request(houses[0],self.parse_house_page,headers={"User-Agent":"Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Mobile Safari/537.36"})
         for house in houses:
             print("house",house)
-            yield self.parse_house_page(str(house))
-            # yield scrapy.Request(house,self.parse_house_page,headers={"User-Agent":"Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Mobile Safari/537.36"})
+            # yield self.parse_house_page(str(house))
+            yield scrapy.Request(house,self.parse_house_page,headers={"User-Agent":"Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Mobile Safari/537.36"})
         # for house in res.select('div section ul a'):
             
         #     print("house",house['href'])
 
-    def parse_house_page(self,url):
-    #     print("This is parse_house:",url)
-    #     yield scrapy.Request(url,headers={"User-Agent":"Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Mobile Safari/537.36"},callback=self.aaa)
-        # res = req.Request(url,headers={"User-Agent":"Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Mobile Safari/537.36"})
-        # with req.urlopen(res) as response:
-        #     data = response.read()
-        # soup = BeautifulSoup(res.body,features="lxml")
-        # print(soup)
-        # print(soup.find_all("div"))
+    # def parse_house_page(self,url):
+    # #     print("This is parse_house:",url)
+    # #     yield scrapy.Request(url,headers={"User-Agent":"Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Mobile Safari/537.36"},callback=self.aaa)
+    #     # res = req.Request(url,headers={"User-Agent":"Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Mobile Safari/537.36"})
+    #     # with req.urlopen(res) as response:
+    #     #     data = response.read()
+    #     # soup = BeautifulSoup(res.body,features="lxml")
+    #     # print(soup)
+    #     # print(soup.find_all("div"))
         
-        opts = FirefoxOptions()
-        opts.add_argument("--headless")
-        driver = webdriver.Firefox(executable_path=".\\Webdriver\\geckodriver.exe",options=opts)
-        driver.get(url)
-        soup = BeautifulSoup(driver.page_source,"html.parser")
-        print("soup: ",soup.find_all("div",class_="detail_footer"))
-        driver.close()
-    # def parse_house_page(self,response):
-    #     soup = BeautifulSoup(response.body,features="lxml")
-    #     print(soup.find_all("ul"))
+    #     opts = FirefoxOptions()
+    #     opts.add_argument("--headless")
+    #     driver = webdriver.Firefox(executable_path=".\\Webdriver\\geckodriver.exe",options=opts)
+    #     driver.get(url)
+    #     soup = BeautifulSoup(driver.page_source,"html.parser")
+    #     print("soup: ",soup.find_all("div",class_="detail_footer"))
+    #     driver.close()
+    def parse_house_page(self,response):
+        soup = BeautifulSoup(response.body,features="lxml")
+        print(soup.find_all("ul"))
