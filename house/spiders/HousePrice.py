@@ -4,6 +4,7 @@ from bs4 import BeautifulSoup
 # from scrapy.selector import Selector
 from selenium import webdriver
 from selenium.webdriver import FirefoxOptions
+from selenium.webdriver import ChromeOptions
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
@@ -24,10 +25,10 @@ class HousepriceSpider(scrapy.Spider):
             # print("house:",house['href'])
         houses = re.findall('https://community.houseprice.tw/building......',str(res.select('div section ul a')))
         # yield scrapy.Request(houses[0],self.parse_house_page,headers={"User-Agent":"Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Mobile Safari/537.36"})
-        yield self.parse_house_page(str(houses[0]))
-        # for house in houses:
+        # yield self.parse_house_page(str(houses[0]))
+        for house in houses:
             # print("house",house)
-            # yield self.parse_house_page(str(house))
+            yield self.parse_house_page(str(house))
             # yield scrapy.Request(house,self.parse_house_page,headers={"User-Agent":"Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Mobile Safari/537.36"})
         # for house in res.select('div section ul a'):
             
@@ -43,10 +44,20 @@ class HousepriceSpider(scrapy.Spider):
     #     # print(soup)
     #     # print(soup.find_all("div"))
         
-        opts = FirefoxOptions()
+        opts = ChromeOptions()
         opts.add_argument("--headless")
-        driver = webdriver.Firefox(executable_path=".\\Webdriver\\geckodriver.exe",options=opts)
+        prefs = {"profile.managed_default_content_settings.images": 2, 'permissions.default.stylesheet': 2}
+        opts.add_experimental_option("prefs", prefs)  # 禁止加载图片和CSS
+        driver = webdriver.Chrome(executable_path=".\\Webdriver\\chromedriver.exe",options=opts)
+        # driver = webdriver.Firefox(executable_path=".\\Webdriver\\geckodriver.exe",options=opts)
         driver.get(url)
+        # try:
+        #     WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.TAG_NAME, "div")))
+        #     print("wait")
+        #     soup = BeautifulSoup(driver.page_source,"html.parser")
+        # finally:
+        #     driver.quit()
+        # print("e: ",soup)
         soup = BeautifulSoup(driver.page_source,"html.parser")
         # print("soup: ",soup.find_all("div",class_="detail_footer"))
         driver.close()
