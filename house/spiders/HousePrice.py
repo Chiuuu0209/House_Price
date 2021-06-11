@@ -13,11 +13,10 @@ class HousepriceSpider(scrapy.Spider):
     name = 'HousePrice'
     city = "台南市_city"
     region = "東區_zip"
-    print("f: ",f"https://community.houseprice.tw/list/{city}/{region}/?p=")
     # allowed_domains = ['https://community.houseprice.tw/list/%E5%8F%B0%E5%8D%97%E5%B8%82_city/%E6%9D%B1%E5%8D%80_zip/']
     # start_urls = ['https://community.houseprice.tw/list/%E5%8F%B0%E5%8D%97%E5%B8%82_city/%E6%9D%B1%E5%8D%80_zip/']
     start_urls = [f"https://community.houseprice.tw/list/{city}/{region}/?p="]
-    remain_urls = [f"https://community.houseprice.tw/list/{city}/{region}/?p=1",f"https://community.houseprice.tw/list/{city}/{region}/"]
+    remain_urls = [f"https://community.houseprice.tw/list/{city}/{region}/",f"https://community.houseprice.tw/list/{city}/{region}/?p=1"]
     def parse(self, response):
         print("parse : ")
         # print("start_url:",self.start_urls)
@@ -35,27 +34,27 @@ class HousepriceSpider(scrapy.Spider):
         url=""
         print("url: ",response.url)
         # print("res: ",res.find_all('a'))
-        print("url_list:",res.find_all(href=re.compile("https://community.houseprice.tw/list/")))
+        # print("url_list:",res.find_all(href=re.compile("https://community.houseprice.tw/list/")))
         for u in res.find_all(href=re.compile("https://community.houseprice.tw/list")):
-            print("u: ",u['href'])
+            # print("u: ",u['href'])
             if u['href'] not in self.remain_urls:
                 self.remain_urls.append(u['href'])
                 yield scrapy.Request(u['href'],self.parse,headers={
                     "User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.77 Safari/537.36",
                     "referer":u['href']
                 })
-        print("remain_url:",self.remain_urls)
+        # print("remain_url:",self.remain_urls)
 
         # print(res.select('div section ul a')['href'])
         # print()
         # for house in res.select('li a'):
             # print("house:",house['href'])
-        # houses = re.findall('https://community.houseprice.tw/building......',str(res.select('div section ul a')))
+        houses = re.findall('https://community.houseprice.tw/building......',str(res.select('div section ul a')))
         # yield scrapy.Request(houses[0],self.parse_house_page,headers=headers)
-        # for house in houses:
+        for house in houses:
             # print("house",house)
             # yield self.parse_house_page(str(house))
-            # yield scrapy.Request(house,self.parse_house_page,headers=headers)
+            yield scrapy.Request(house,self.parse_house_page,headers=headers)
         # for house in res.select('div section ul a'):
             
         #     print("house",house['href'])
