@@ -30,11 +30,11 @@ class HousepriceSpider(scrapy.Spider):
         # for house in res.select('li a'):
             # print("house:",house['href'])
         houses = re.findall('https://community.houseprice.tw/building......',str(res.select('div section ul a')))
-        yield scrapy.Request(houses[0],self.parse_house_page,headers=headers)
-        # for house in houses:
+        # yield scrapy.Request(houses[0],self.parse_house_page,headers=headers)
+        for house in houses:
             # print("house",house)
             # yield self.parse_house_page(str(house))
-            # yield scrapy.Request(house,self.parse_house_page,headers=headers)
+            yield scrapy.Request(house,self.parse_house_page,headers=headers)
         # for house in res.select('div section ul a'):
             
         #     print("house",house['href'])
@@ -58,11 +58,37 @@ class HousepriceSpider(scrapy.Spider):
     #     driver.close()
     def parse_house_page(self,response):
         soup = BeautifulSoup(response.body,features="lxml")
-        print(soup.find_all("address")[0].text)
+        print("地址: ",soup.find_all("address")[0].text)
         # print("detail",soup.find_all(class_=re.compile("detail")))
-        print("ul",soup.find_all("ul"))
-        for t in soup.find_all("li"):
-            print("t",t.text)
-            print("t2",re.findall('..*',str(t.text)))
-        # print(soup.find_all(class_='detail_footer'))
+        # print("ul",soup.find_all("ul"))
+        li = soup.find_all("li")
+        try:
+            print("類型: ",li[0].get_text())
+            print("戶數: ",li[1].get_text())
+            print("評數: ",li[2].get_text())
+            print("屋齡: ",li[3].get_text())
+            print("樓高: ",li[4].get_text())
+            print("公設比: ",li[5].get_text())
+            print("公共設施: ",li[6].get_text())
+            print("國小學區: ",li[7].get_text())
+            print("國中學區: ",li[8].get_text())
+            print("土地分區: ",li[9].get_text())
+            print("主結構: ",li[10].get_text())
+            print("建設公司: ",li[11].get_text())
+            print("管理方式: ",li[12].get_text())
+        except:
+            print("li: ",li)
+        # try:
+        #     for t in soup.find_all("li"):
+        #         print(text for text in t.stripped_strings)
+        #         for s in t.stripped_strings:
+        #             print(s,": ")
+        # except:
+        #     print("li: ",soup.find_all("li"))
+
+        # for t in soup.find_all("li"):
+        #     print("t",t.text)
+        #     for s in t.stripped_strings:
+        #         print("s: ",s)
+
         
