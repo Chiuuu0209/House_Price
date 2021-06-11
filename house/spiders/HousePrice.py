@@ -62,8 +62,10 @@ class HousepriceSpider(scrapy.Spider):
         # print("soup: ",soup.find_all("div",class_="detail_footer"))
         driver.close()
         # print("s1:",soup.find_all(class_="item")[0])
-        print("標題: ",soup.find_all('h1',class_="flex_item title_big")[0].get_text(strip=True))
-
+        try:
+            print("標題: ",soup.find_all('h1',class_="flex_item title_big")[0].get_text(strip=True))
+        except:
+            print("標題: ",soup.find_all('h1'))
         try:
             print("地址: ",soup.find_all(class_="item")[0].find_all("li")[0].get_text(strip=True))
             print("類型: ",soup.find_all(class_="item")[0].find_all("li")[1].get_text(strip=True))
