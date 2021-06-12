@@ -16,7 +16,7 @@ class HousepriceSpider(scrapy.Spider):
     # allowed_domains = ['https://community.houseprice.tw/list/%E5%8F%B0%E5%8D%97%E5%B8%82_city/%E6%9D%B1%E5%8D%80_zip/']
     # start_urls = ['https://community.houseprice.tw/list/%E5%8F%B0%E5%8D%97%E5%B8%82_city/%E6%9D%B1%E5%8D%80_zip/']
     start_urls = [f"https://community.houseprice.tw/list/{city}/{region}/?p="]
-    remain_urls = [f"https://community.houseprice.tw/list/{city}/{region}/",f"https://community.houseprice.tw/list/{city}/{region}/?p=1"]
+    remain_urls = ["https://community.houseprice.tw/list",f"https://community.houseprice.tw/list/{city}/{region}/",f"https://community.houseprice.tw/list/{city}/{region}/?p=1"]
     def parse(self, response):
         print("parse : ")
         # print("start_url:",self.start_urls)
@@ -35,6 +35,7 @@ class HousepriceSpider(scrapy.Spider):
         print("url: ",response.url)
         # print("res: ",res.find_all('a'))
         # print("url_list:",res.find_all(href=re.compile("https://community.houseprice.tw/list/")))
+
         for u in res.find_all(href=re.compile("https://community.houseprice.tw/list")):
             # print("u: ",u['href'])
             if u['href'] not in self.remain_urls:
@@ -43,6 +44,7 @@ class HousepriceSpider(scrapy.Spider):
                     "User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.77 Safari/537.36",
                     "referer":u['href']
                 })
+        
         # print("remain_url:",self.remain_urls)
 
         # print(res.select('div section ul a')['href'])
@@ -78,11 +80,34 @@ class HousepriceSpider(scrapy.Spider):
     #     driver.close()
     def parse_house_page(self,response):
         soup = BeautifulSoup(response.body,features="lxml")
-        print("parse_url: ",response.url)
-        print("地址: ",soup.find_all("address")[0].text)
+        # print("parse_url: ",response.url)
+        # print("地址: ",soup.find_all("address")[0].text)
         # print("detail",soup.find_all(class_=re.compile("detail")))
         # print("ul",soup.find_all("ul"))
         li = soup.find_all("li")
+        # print(soup.find(class_='b-tag'))
+        # print("li: ",li)
+        if soup.find(class_='b-tag'):
+            # print("btag: ",soup.find("b-tag"))
+            yield{
+                "建案名稱":li[0].get_text(),
+                "地址":soup.find_all("address")[0].text,
+                "屋齡":li[4].get_text(),
+                "樓高":li[5].get_text(),
+                "公設比":li[6].get_text(),
+                "建設公司":li[12].get_text(),
+                "總戶數":li[2].get_text()
+            }
+        else:
+            yield{
+                "建案名稱":"無資料",
+                "地址":soup.find_all("address")[0].text,
+                "屋齡":li[3].get_text(),
+                "樓高":li[4].get_text(),
+                "公設比":li[5].get_text(),
+                "建設公司":li[11].get_text(),
+                "總戶數":li[1].get_text()
+            }
         try:
             print("類型: ",li[0].get_text())
             print("戶數: ",li[1].get_text())
@@ -97,6 +122,15 @@ class HousepriceSpider(scrapy.Spider):
             print("主結構: ",li[10].get_text())
             print("建設公司: ",li[11].get_text())
             print("管理方式: ",li[12].get_text())
+            # yield{
+            #     "建案名稱":li[11].get_text(),
+            #     "地址":soup.find_all("address")[0].text,
+            #     "屋齡":li[3].get_text(),
+            #     "樓高":li[4].get_text(),
+            #     "公設比":li[5].get_text(),
+            #     "建設公司":li[11].get_text(),
+            #     "總戶數":li[1].get_text()
+            # }
         except:
             print("li: ",li)
         # try:
