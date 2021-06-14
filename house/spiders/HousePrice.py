@@ -11,14 +11,21 @@ import urllib.request as req
 
 class HousepriceSpider(scrapy.Spider):
     name = 'HousePrice'
-    city = "台南市_city"
-    region = "東區_zip"
+    # city = "台南市_city"
+    # region = "東區_zip"
+    # city = city + "_city"
+    # region = region + "_zip"
     # allowed_domains = ['https://community.houseprice.tw/list/%E5%8F%B0%E5%8D%97%E5%B8%82_city/%E6%9D%B1%E5%8D%80_zip/']
     # start_urls = ['https://community.houseprice.tw/list/%E5%8F%B0%E5%8D%97%E5%B8%82_city/%E6%9D%B1%E5%8D%80_zip/']
-    start_urls = [f"https://community.houseprice.tw/list/{city}/{region}/?p="]
-    remain_urls = ["https://community.houseprice.tw/list",f"https://community.houseprice.tw/list/{city}/{region}/",f"https://community.houseprice.tw/list/{city}/{region}/?p=1"]
+
+    def __init__(self, city="台南市" ,region = "東區" , *args, **kwargs):
+        super(HousepriceSpider, self).__init__(*args, **kwargs)
+        self.start_urls = [f"https://community.houseprice.tw/list/{city}_city/{region}_zip/?p="]
+        self.remain_urls = ["https://community.houseprice.tw/list",f"https://community.houseprice.tw/list/{city}_city/{region}_zip/",f"https://community.houseprice.tw/list/{city}_city/{region}_zip/?p=1"]
+    # start_urls = [f"https://community.houseprice.tw/list/{city}/{region}/?p="]
+    
     def parse(self, response):
-        print("parse : ")
+        # print("parse : ")
         # print("start_url:",self.start_urls)
         headers={
             "User-Agent":"Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Mobile Safari/537.36",
@@ -31,7 +38,7 @@ class HousepriceSpider(scrapy.Spider):
         #     "User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.77 Safari/537.36"
         # }
         res = BeautifulSoup(response.body,features="lxml")
-        url=""
+        # url=""
         # print("url: ",response.url)
 
         # print("res: ",res.find_all('a'))
