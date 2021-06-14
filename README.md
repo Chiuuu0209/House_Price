@@ -19,3 +19,8 @@ Output csv file
 ```
 scrapy crawl HousePrice -O house_price.csv
 ```
+
+Scrapy tutorial
+```
+https://hackmd.io/frV3RgNFRyiQAgFnd_gBOA
+```

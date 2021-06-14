@@ -92,36 +92,36 @@ class HousepriceSpider(scrapy.Spider):
             yield{
                 "建案名稱":li[0].get_text(),
                 "地址":soup.find_all("address")[0].text,
-                "屋齡":li[4].get_text(),
-                "樓高":li[5].get_text(),
-                "公設比":li[6].get_text(),
-                "建設公司":li[12].get_text(),
-                "總戶數":li[2].get_text()
+                "屋齡":li[4].get_text()[2:],
+                "樓高":li[5].get_text()[2:],
+                "公設比":li[6].get_text()[3:],
+                "建設公司":li[12].get_text()[4:],
+                "總戶數":li[2].get_text()[3:]
             }
         else:
             yield{
                 "建案名稱":"無資料",
                 "地址":soup.find_all("address")[0].text,
-                "屋齡":li[3].get_text(),
-                "樓高":li[4].get_text(),
-                "公設比":li[5].get_text(),
-                "建設公司":li[11].get_text(),
-                "總戶數":li[1].get_text()
+                "屋齡":li[3].get_text()[2:],
+                "樓高":li[4].get_text()[2:],
+                "公設比":li[5].get_text()[3:],
+                "建設公司":li[11].get_text()[4:],
+                "總戶數":li[1].get_text()[3:]
             }
         try:
-            print("類型: ",li[0].get_text())
-            print("戶數: ",li[1].get_text())
-            print("評數: ",li[2].get_text())
-            print("屋齡: ",li[3].get_text())
-            print("樓高: ",li[4].get_text())
-            print("公設比: ",li[5].get_text())
-            print("公共設施: ",li[6].get_text())
-            print("國小學區: ",li[7].get_text())
-            print("國中學區: ",li[8].get_text())
-            print("土地分區: ",li[9].get_text())
-            print("主結構: ",li[10].get_text())
-            print("建設公司: ",li[11].get_text())
-            print("管理方式: ",li[12].get_text())
+            print("類型: ",li[0].get_text()[2:])
+            print("戶數: ",li[1].get_text()[2:])
+            print("評數: ",li[2].get_text()[2:])
+            print("屋齡: ",li[3].get_text()[2:])
+            print("樓高: ",li[4].get_text()[2:])
+            print("公設比: ",li[5].get_text()[3:])
+            print("公共設施: ",li[6].get_text()[4:])
+            print("國小學區: ",li[7].get_text()[4:])
+            print("國中學區: ",li[8].get_text()[4:])
+            print("土地分區: ",li[9].get_text()[4:])
+            print("主結構: ",li[10].get_text()[3:])
+            print("建設公司: ",li[11].get_text()[4:])
+            print("管理方式: ",li[12].get_text()[4:])
             # yield{
             #     "建案名稱":li[11].get_text(),
             #     "地址":soup.find_all("address")[0].text,
