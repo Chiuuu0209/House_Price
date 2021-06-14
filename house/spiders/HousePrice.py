@@ -32,7 +32,8 @@ class HousepriceSpider(scrapy.Spider):
         # }
         res = BeautifulSoup(response.body,features="lxml")
         url=""
-        print("url: ",response.url)
+        # print("url: ",response.url)
+
         # print("res: ",res.find_all('a'))
         # print("url_list:",res.find_all(href=re.compile("https://community.houseprice.tw/list/")))
 
@@ -81,6 +82,8 @@ class HousepriceSpider(scrapy.Spider):
     def parse_house_page(self,response):
         soup = BeautifulSoup(response.body,features="lxml")
         # print("parse_url: ",response.url)
+        # print("s:",soup.prettify())
+        # print("bname: ",soup.find('title').text.split('-')[0])
         # print("地址: ",soup.find_all("address")[0].text)
         # print("detail",soup.find_all(class_=re.compile("detail")))
         # print("ul",soup.find_all("ul"))
@@ -90,7 +93,7 @@ class HousepriceSpider(scrapy.Spider):
         if soup.find(class_='b-tag'):
             # print("btag: ",soup.find("b-tag"))
             yield{
-                "建案名稱":li[0].get_text(),
+                "建案名稱":soup.find('title').text.split('-')[0],
                 "地址":soup.find_all("address")[0].text,
                 "屋齡":li[4].get_text()[2:],
                 "樓高":li[5].get_text()[2:],
@@ -100,7 +103,7 @@ class HousepriceSpider(scrapy.Spider):
             }
         else:
             yield{
-                "建案名稱":"無資料",
+                "建案名稱":soup.find('title').text.split('-')[0],
                 "地址":soup.find_all("address")[0].text,
                 "屋齡":li[3].get_text()[2:],
                 "樓高":li[4].get_text()[2:],
@@ -108,20 +111,20 @@ class HousepriceSpider(scrapy.Spider):
                 "建設公司":li[11].get_text()[4:],
                 "總戶數":li[1].get_text()[3:]
             }
-        try:
-            print("類型: ",li[0].get_text()[2:])
-            print("戶數: ",li[1].get_text()[2:])
-            print("評數: ",li[2].get_text()[2:])
-            print("屋齡: ",li[3].get_text()[2:])
-            print("樓高: ",li[4].get_text()[2:])
-            print("公設比: ",li[5].get_text()[3:])
-            print("公共設施: ",li[6].get_text()[4:])
-            print("國小學區: ",li[7].get_text()[4:])
-            print("國中學區: ",li[8].get_text()[4:])
-            print("土地分區: ",li[9].get_text()[4:])
-            print("主結構: ",li[10].get_text()[3:])
-            print("建設公司: ",li[11].get_text()[4:])
-            print("管理方式: ",li[12].get_text()[4:])
+        # try:
+            # print("類型: ",li[0].get_text()[2:])
+            # print("戶數: ",li[1].get_text()[2:])
+            # print("評數: ",li[2].get_text()[2:])
+            # print("屋齡: ",li[3].get_text()[2:])
+            # print("樓高: ",li[4].get_text()[2:])
+            # print("公設比: ",li[5].get_text()[3:])
+            # print("公共設施: ",li[6].get_text()[4:])
+            # print("國小學區: ",li[7].get_text()[4:])
+            # print("國中學區: ",li[8].get_text()[4:])
+            # print("土地分區: ",li[9].get_text()[4:])
+            # print("主結構: ",li[10].get_text()[3:])
+            # print("建設公司: ",li[11].get_text()[4:])
+            # print("管理方式: ",li[12].get_text()[4:])
             # yield{
             #     "建案名稱":li[11].get_text(),
             #     "地址":soup.find_all("address")[0].text,
@@ -131,8 +134,8 @@ class HousepriceSpider(scrapy.Spider):
             #     "建設公司":li[11].get_text(),
             #     "總戶數":li[1].get_text()
             # }
-        except:
-            print("li: ",li)
+        # except:
+            # print("li: ",li)
         # try:
         #     for t in soup.find_all("li"):
         #         print(text for text in t.stripped_strings)
