@@ -82,65 +82,65 @@ class HousepriceSpider(scrapy.Spider):
         soup = BeautifulSoup(driver.page_source,"html.parser")
         # print("soup: ",soup.find_all("div",class_="detail_footer"))
         driver.close()
-        # print("s1:",soup.find_all(class_="item")[0])
-        li = soup.find_all("li")
-        if soup.find(class_='b-tag'):
-            # print("btag: ",soup.find("b-tag"))
-            yield{
-                "建案名稱":soup.find('title').text.split('-')[0],
-                # "地址":soup.find_all("address")[0].text,
-                "屋齡":li[4].get_text()[2:],
-                "樓高":li[5].get_text()[2:],
-                "公設比":li[6].get_text()[3:],
-                "建設公司":li[12].get_text()[4:],
-                "總戶數":li[2].get_text()[3:]
-            }
-        else:
-            yield{
-                "建案名稱":soup.find('title').text.split('-')[0],
-                # "地址":soup.find_all("address")[0].text,
-                "屋齡":li[3].get_text()[2:],
-                "樓高":li[4].get_text()[2:],
-                "公設比":li[5].get_text()[3:],
-                "建設公司":li[11].get_text()[4:],
-                "總戶數":li[1].get_text()[3:]
-            }
+        #need to do
+        # li = soup.find_all("li")
+        # if soup.find(class_='b-tag'):#all tag is wrong
+        #     # print("btag: ",soup.find("b-tag"))
+        #     yield{
+        #         "建案名稱":soup.find('title').text.split('-')[0],
+        #         # "地址":soup.find_all("address")[0].text, #wrong
+        #         "屋齡":li[4].get_text()[2:],
+        #         "樓高":li[5].get_text()[2:],
+        #         "公設比":li[6].get_text()[3:],
+        #         "建設公司":li[12].get_text()[4:],
+        #         "總戶數":li[2].get_text()[3:]
+        #     }
+        # else:
+        #     yield{
+        #         "建案名稱":soup.find('title').text.split('-')[0],
+        #         # "地址":soup.find_all("address")[0].text,
+        #         "屋齡":li[3].get_text()[2:],
+        #         "樓高":li[4].get_text()[2:],
+        #         "公設比":li[5].get_text()[3:],
+        #         "建設公司":li[11].get_text()[4:],
+        #         "總戶數":li[1].get_text()[3:]
+        #     }
 
 
-        # try:
-        #     print("標題: ",soup.find_all('h1',class_="flex_item title_big")[0].get_text(strip=True))
-        # except:
-        #     print("標題: ",soup.find_all('h1'))
-        # try:
-        #     print("地址: ",soup.find_all(class_="item")[0].find_all("li")[0].get_text(strip=True))
-        #     print("類型: ",soup.find_all(class_="item")[0].find_all("li")[1].get_text(strip=True))
-        #     print("土地: ",soup.find_all(class_="item")[0].find_all("li")[2].get_text(strip=True))
-        #     print("國小: ",soup.find_all(class_="item")[0].find_all("li")[3].get_text(strip=True))
-        #     print("國中: ",soup.find_all(class_="item")[0].find_all("li")[4].get_text(strip=True))
-        # except:
-        #     print("none")
+        try:
+            print("標題: ",soup.find_all('h1',class_="flex_item title_big")[0].get_text(strip=True))
+        except:
+            print("標題: ",soup.find_all('h1'))
+        try:
+            print("地址: ",soup.find_all(class_="item")[0].find_all("li")[0].get_text(strip=True))
+            print("類型: ",soup.find_all(class_="item")[0].find_all("li")[1].get_text(strip=True))
+            print("土地: ",soup.find_all(class_="item")[0].find_all("li")[2].get_text(strip=True))
+            print("國小: ",soup.find_all(class_="item")[0].find_all("li")[3].get_text(strip=True))
+            print("國中: ",soup.find_all(class_="item")[0].find_all("li")[4].get_text(strip=True))
+        except:
+            print("none")
 
-        # try:
-        #     print("屋齡: ",soup.find_all(class_="item")[1].find_all("li")[0].get_text(strip=True))
-        #     print("樓高: ",soup.find_all(class_="item")[1].find_all("li")[1].get_text(strip=True))
-        #     print("坪數: ",soup.find_all(class_="item")[1].find_all("li")[2].get_text(strip=True))
-        #     print("公設: ",soup.find_all(class_="item")[1].find_all("li")[3].get_text(strip=True))
-        # except:
-        #     print("none")
-        # try:
-        #     print("結構: ",soup.find_all(class_="item")[2].find_all("li")[0].get_text(strip=True))
-        #     print("建設: ",soup.find_all(class_="item")[2].find_all("li")[1].get_text(strip=True))
-        #     print("營造: ",soup.find_all(class_="item")[2].find_all("li")[2].get_text(strip=True))
-        #     print("公共: ",soup.find_all(class_="item")[2].find_all("li")[3].get_text(strip=True))
-        # except:
-        #     print("none")
-        # try:
-        #     print("戶數: ",soup.find_all(class_="item")[3].find_all("li")[0].get_text(strip=True))
-        #     print("管理: ",soup.find_all(class_="item")[3].find_all("li")[1].get_text(strip=True))
-        #     print("車位: ",soup.find_all(class_="item")[3].find_all("li")[2].get_text(strip=True))
-        #     print("垃圾: ",soup.find_all(class_="item")[3].find_all("li")[3].get_text(strip=True))
-        # except:
-        #     print("none")
+        try:
+            print("屋齡: ",soup.find_all(class_="item")[1].find_all("li")[0].get_text(strip=True))
+            print("樓高: ",soup.find_all(class_="item")[1].find_all("li")[1].get_text(strip=True))
+            print("坪數: ",soup.find_all(class_="item")[1].find_all("li")[2].get_text(strip=True))
+            print("公設: ",soup.find_all(class_="item")[1].find_all("li")[3].get_text(strip=True))
+        except:
+            print("none")
+        try:
+            print("結構: ",soup.find_all(class_="item")[2].find_all("li")[0].get_text(strip=True))
+            print("建設: ",soup.find_all(class_="item")[2].find_all("li")[1].get_text(strip=True))
+            print("營造: ",soup.find_all(class_="item")[2].find_all("li")[2].get_text(strip=True))
+            print("公共: ",soup.find_all(class_="item")[2].find_all("li")[3].get_text(strip=True))
+        except:
+            print("none")
+        try:
+            print("戶數: ",soup.find_all(class_="item")[3].find_all("li")[0].get_text(strip=True))
+            print("管理: ",soup.find_all(class_="item")[3].find_all("li")[1].get_text(strip=True))
+            print("車位: ",soup.find_all(class_="item")[3].find_all("li")[2].get_text(strip=True))
+            print("垃圾: ",soup.find_all(class_="item")[3].find_all("li")[3].get_text(strip=True))
+        except:
+            print("none")
 
 
 
